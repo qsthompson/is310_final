@@ -171,11 +171,11 @@ async function load_data() {
 	files = await response.text()
 	console.log(files)
 	tip = document.createElement('span')
-	tip.innerHTML = 'Choose a dataset to display:'
+	tip.innerHTML = 'Choose a dataset to display: '
 	r.appendChild(tip)
 	selector = document.createElement('select')
 	selector.id = 'selector'
-	for (const f of files.split(/\r?\n/).pop()) {
+	for (const f of files.split(/\r?\n/)) {
 		o = document.createElement('option')
 		o.value = f
 		o.innerHTML = f.split('_')[0]
