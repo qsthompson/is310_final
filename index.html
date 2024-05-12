@@ -50,7 +50,7 @@
 <body>
 	<h1>Amazon's Best Selling Titles</h1>
 	<div id='links'>
-		<a href="data">Data Collected</a>
+		<a href="https://github.com/qsthompson/is310_final/tree/main/data">Data Collected</a>
 		<a href="collectbestproducts.py">Web Scraping Code</a>
 		<a href="analysis.py">Analysis+Visualization Code</a>
 	</div>	
@@ -115,7 +115,7 @@ async function show_visualization() {
 		e.remove()
 		//clear previous items
 	})
-	response = await fetch('data/' + document.getElementById('selector').value)
+	response = await fetch('https://raw.githubusercontent.com/qsthompson/is310_final/main/data/' + document.getElementById('selector').value)
 	data = JSON.parse(await response.json())
 
 	function fillcard(title, list) {
