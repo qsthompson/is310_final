@@ -116,9 +116,7 @@ async function show_visualization() {
 		//clear previous items
 	})
 	response = await fetch('https://raw.githubusercontent.com/qsthompson/is310_final/main/data/' + document.getElementById('selector').value)
-	json = await response.json()
-	console.log(json)
-	data = JSON.parse(json)
+	data = await response.json()
 
 	function fillcard(title, list) {
 		card = document.createElement('div')
