@@ -119,6 +119,7 @@ async function load_data() {
 	selector = document.createElement('select')
 	selector.id = 'selector'
 	for (const f in files.split(/\r?\n/)) {
+		console.log(f)
 		o = document.createElement('option')
 		o.value = f
 		o.innerHTML = f.split('_')[0]
