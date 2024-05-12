@@ -46,6 +46,17 @@
 	.l:only-child {
 		display: block;
 	}
+	#vis {
+		display: flex;
+		justify-content: space-between;
+	}
+	.topresults {}
+	.cats {
+		overflow-y: scroll;
+		border: .1em solid black;
+		max-height: 16em;
+	}
+	.cats .card {}
 </style>
 <body>
 	<h1>Amazon's Best Selling Titles</h1>
@@ -121,9 +132,9 @@ async function show_visualization() {
 	function fillcard(title, list) {
 		card = document.createElement('div')
 		card.classList.add('card')
-		title = document.createElement('h3')
-		title.innerHTML = title
-		card.appendChild(title)
+		t = document.createElement('h3')
+		t.innerHTML = title
+		card.appendChild(t)
 		l = document.createElement('ol')
 		l.classList.add('topten')
 		for (const i of list) {
@@ -138,7 +149,10 @@ async function show_visualization() {
 	overallresults = fillcard("Overall Results", data['overall_terms'])
 	overallresults.classList.add('topresults')
 	r.appendChild(overallresults)
-	
+	rbox = document.createElement('div')
+	tip = document.createElement('h3')
+	tip.innerHTML = "Top Terms by Category"
+	rbox.appendChild(tip)
 	catresults = document.createElement('div')
 	catresults.classList.add('cats')
 	for (const [key, value] of Object.entries(data)) {
@@ -146,7 +160,8 @@ async function show_visualization() {
 			catresults.appendChild(fillcard(key, value))
 		}
 	}
-	r.appendChild(catresults)	
+	rbox.appendChild(catresults
+	r.appendChild(rbox)	
 }
 
 async function load_data() {
@@ -155,7 +170,9 @@ async function load_data() {
 	response = await fetch('data/index');
 	files = await response.text()
 	console.log(files)
-
+	tip = document.createElement('span')
+	tip.innerHTML = 'Choose a dataset to display:'
+	r.appendChild(tip)
 	selector = document.createElement('select')
 	selector.id = 'selector'
 	for (const f of files.split(/\r?\n/)) {
