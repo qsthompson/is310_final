@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<style>
+	b {
+		background: #f0f;	
+	}
+	.p {
+		text-indent: 3em;
+	}
+	div:has(.h) div {
+		display: none;
+	}
+	.v:hover {
+		color: #555;
+		cursor: pointer;
+	}
+	.v.h {
+		padding-bottom: 1em;
+		border-bottom: .1em dotted #555;
+	}
+	.v.h > a::before {
+		content:'+';	
+	}
+	.v > a:before {
+		content:'•';
+		padding: .5em;
+	}
+	.f {
+		display: flex;
+		justify-content: space-evenly;
+	}
+	.f img {
+		max-width: 20em;
+		height: auto; 	
+	}
+	#links a {
+		padding: 1em;
+	}
+	.l {
+		display: none;
+
+	}
+	.l::before {
+		content: 'Loading...';
+	}
+	.l:only-child {
+		display: block;
+	}
+</style>
+<body>
+	<h1>Amazon's Best Selling Titles</h1>
+	<div id='links'>
+		<a href="data">Data Collected</a>
+		<a href="collectbestproducts.py">Web Scraping Code</a>
+		<a href="analysis.py">Analysis+Visualization Code</a>
+	</div>	
+	<div>
+	<h2 class="v"><a></a>Introduction</h2>
+	<div class="p">
+	Amazon is an online sales platform. Originally, it began as a book selling platform in 1994, and expanded to other products in 1998. From there, they have become a ubiquitous storefront for many people's varioyus needs, akin to Sears in the early 20th century
+	<sup><a href="https://sites.lsa.umich.edu/mje/2023/05/01/the-history-of-amazon-and-its-rise-to-success/">The History of Amazon</a></sup>.
+	Because Amazon has so much influence, the products sold on the platform and the trends visible in their sales can be informative about what people all over the world care about in a product (or at least what Amazon thinks they care about, but I will come back to that).
+	For my part, I don't really shop on Amazon at all. I don't really agree with what I have heard about their labor practices and, at least for now, I seem to be able to make my excessively cheap purchases in other places.
+	</div>
+	</div>
+	<div>
+	<h2 class="v"><a></a>What is this project?</h2>
+	<div class="p">For this project, I scraped data from the <a href="https://www.amazon.com/Best-Sellers/zgbs">Amazon Best Sellers list</a> using Selenium and Python. Amazon does not provide a single list of all the best selling items, so I instead scraped all of the categorized lists of best selling items in various categories, which Amazon lists along the left side of the main best sellers page. Each of these categorized pages contains a list of 100 arbitrarily chosen items within Amazon's arbitrary category. Each of these top 100 pages also has a list of the top 100 best sellers in a series of more specific categories, but I decided that my data set would be easier to work with if I only scraped this topmost level of categories.</div>
+	<div class="p">This bestsellers list is designed, chosen and curated by Amazon, whose methods are not public, so it is not safe to assume that they can be used as an unbiased data. Instead, this data offers insights into what a product that Amazon values looks like. By analyzing the titles of bestselling items using TF-IDF, I have collected a series of the most common phrases used in titles. By comparing these phrases to Amazon's rankings, user-created ratings, and price, this data can be used to find the words that sell on Amazon, and, maybe more interestingly, the words that Amazon likes to hear.</div>
+	<div class="p">I was originally planning on analyzing term frequency in the descriptions of items as well, but Amazon's formatting for item pages proved to be fairly inconsistent which made it very difficult to scrape as a result. There is quite a bit of data in product titles which can still be analyzed.</div> 
+	<div class="p">
+	There are two scripts involved which I wrote for this project, the script for scraping the data and the scrip for analyzing and visualizing the data. The data scraping is done using Selenium, the data analysis is done using TF-IDF and Pandas, and the visualization is done using JavaScript. Due to this structure, as long as the structure of the Amazon bestsellers list does not change, this script can be re-run and compared to previous results. While it is very likely that the page will be restructured in the near future, changes to the code should not be too complex. Examining older versions of the bestsellers pages through the WayBack Machine archives shows that while the classes of elements are different, meaning that my code would break, the overall structure of the page is the same and would not require particularly complex changes. This does mean that the project is not that sustainable, and likely could not be reproduced without some work, but this is true of any analysis of a company, whose online presence is very likely to change regularly.
+	</div>
+	</div>
+	<div>
+	<h2 class="v"><a></a>Findings</h2>
+	<div id="results">
+		<div class='l'></div>
+	</div>
+	</div>
+	<div>
+	<h2 class="v"><a></a>Reflections</h2>
+	<div class="p">
+	I have worked with Selenium in the past, and it is so annoying every single time. I am not really sure why I decided to use it in my project, but after a while, I made a script that works with the Amazon site at this exact moment. Having to wrap every single query in a try catch statement so that it doesn't crash the entire script if it fails seems like a bad practice, but I don't know of a better way to do it. Amazon, to its credit, has so many different ways of showing that an item has been removed from the list, and I'm sure that if I were to re-run the script in the future, I would encounter one that I hadn't prepared for and it would fail. 
+	</div>
+	<div class="f">
+		<div><img src="weird_failure.png"></div>
+		<div><img src="weird_failure_2.png"></div>
+	</div>
+	<div class='p'>
+	I also had a lot of trouble with TF-IDF, which has been true in the past as well. I think if i put in a lot of time taking it apart and understanding how it works internally, I would understand it a lot better. While doing this project, I just tried my best to trust it. Even once I had it working somewhat properly, I found that I was still having trouble with it, because the top terms were ones which were by themselves in the product titles. With my limited understanding of how TF-IDF worked, I thought that the max-df being .7 would fiulter these out, but I guess it didn't work on single word strings. I am sure that these could have been filtered out in a single line using a dataframe instruction, but I didn't know how to do it. I do not enjoy pandas' documentation, and what I usually do when something's documentation isn't cutting it is to check forum answers, but people's uses of pandas always seem to be way too specific or complex to help me. After thinking about this for a little while, I instead decided to filter out titles with fewer than four words before the TF-IDF process, which was much easier for me.
+	<div class='p'>
+	This felt very arbitrary, and it was, as the next time I ran the code, the word "prey" was the top result with a score of 0.88, having ocurred 2 times in 2 different 7 word titles. If I raised the minimum length more, this would be fixed, but the real problem was that the book, song and movie titles did not follow the same "extremely long and descriptive" title convention that all of the other categories did. If I filtered them out, this would likely solve the problem entirely, but my data cleaning was getting more and more subjective by the second. So, I went ahead and added a section to the code which would not add certain categories to the overall title list, then ran the code repeatedly, adding categories that broke convention, until I was happy with how the result looked. The skipped categories would still have their common phrases indexed amongst their own titles, just not overall. After this, "crochet" was still the winning term because one product featured a title where they said crochet 8 times and I was starting to accept that TF-IDF was an imperfect text analysis system, especially in situations where the documents used are so short (product titles).
+	</div>
+	</div>
+	</div>
+	<div class="p">
+	After all of this data cleaning and confusion, I was almost ready to write my own text analysis method, but then I had the idea to instead combine all of the titles for each category into a single string so that they would be categorized more fairly, and this worked beautifully. The top term was "refurbished" which I think makes a lot of sense. The second term was "coin," likely because the collectible coin section was still too heavily weighted somehow, but it didn't matter too much. Most of the results seemed reasonable, and that's surely what's most important in data visualization. 
+	</div>
+</body>
+<script>
+document.querySelectorAll('.v').forEach(e => {
+	e.onclick = function () {
+		if (e.classList.contains('h')) {
+			e.classList.remove('h')
+		} else {
+			e.classList.add('h')
+		}
+	}
+})
+
+async function load_data() {
+	r = document.getElementById('results')
+
+	response = await fetch('data/index');
+	files = await response.text()
+
+	selector = document.createElement('select')
+	selector.id = 'selector'
+	for (const f in files.split(/\r?\n/)) {
+		o = document.createElement('option')
+		o.value = f
+		o.innerHTML = f.split('_')[0]
+		selector.appendChild(o);
+	}
+	//create a list of all the data available
+	r.appendChild(selector)
+
+	v = document.createElement('div')
+	v.id = 'vis'
+	loader = document.createElement('div')
+	loader.classList.add('l')
+	v.appendChild('l')
+	r.appendChild(v)
+
+}
+load_data()
+async function show_visualization() {
+	r = document.getElementById('results')
+	r.querySelectorAll(':not(.l)').forEach(e => {
+		e.remove()
+		//clear previous items
+	})
+	response = await fetch('data/' + document.getElementById('selector').value)
+	data = JSON.parse(await response.json())
+
+	function fillcard(title, list) {
+		card = document.createElement('div')
+		card.classList.add('card')
+		title = document.createElement('h3')
+		title.innerHTML = title
+		card.appendChild('title')
+		list = document.createElement('ol')
+		list.classList.add('topten')
+		for (const i in list) {
+			li = document.createElement('li')
+			li.innerHTML = i
+			list.appendChild(li)
+		}
+		return card
+	}
+
+	overallresults = fillcard("Overall Results", data['overall_terms'])
+	overallresults.classList.add('topresults')
+	r.appendChild(overallresults)
+	
+	catresults = document.createElement('div')
+	catresults.classList.add('cats')
+	for (const [key, value] of Object.entries(data)) {
+		if (key != 'overall_terms') {
+			catresults.appendChild(fillcard(key, value))
+		}
+	}
+	r.appendChild(catresults)	
+}
+//the findings section should have a [dynamically generated] dropdown that allows you to cycle between the visuals for each of the scrapes
+//backend pipe ls data to text file for frontend to read, and name all visuals with corresponding timestamp prefix in their respective folder
+</script>
+</html>
