@@ -160,7 +160,7 @@ async function show_visualization() {
 			catresults.appendChild(fillcard(key, value))
 		}
 	}
-	rbox.appendChild(catresults
+	rbox.appendChild(catresults)
 	r.appendChild(rbox)	
 }
 
@@ -175,7 +175,7 @@ async function load_data() {
 	r.appendChild(tip)
 	selector = document.createElement('select')
 	selector.id = 'selector'
-	for (const f of files.split(/\r?\n/)) {
+	for (const f of files.split(/\r?\n/).pop()) {
 		o = document.createElement('option')
 		o.value = f
 		o.innerHTML = f.split('_')[0]
