@@ -114,6 +114,7 @@ async function load_data() {
 
 	response = await fetch('data/index');
 	files = await response.text()
+	console.log(files)
 
 	selector = document.createElement('select')
 	selector.id = 'selector'
