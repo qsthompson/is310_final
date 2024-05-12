@@ -109,36 +109,6 @@ document.querySelectorAll('.v').forEach(e => {
 	}
 })
 
-async function load_data() {
-	r = document.getElementById('results')
-
-	response = await fetch('data/index');
-	files = await response.text()
-	console.log(files)
-
-	selector = document.createElement('select')
-	selector.id = 'selector'
-	for (const f in files.split(/\r?\n/)) {
-		console.log(f)
-		o = document.createElement('option')
-		o.value = files[f]
-		o.innerHTML = files[f].split('_')[0]
-		selector.appendChild(o);
-	}
-	//create a list of all the data available
-	r.appendChild(selector)
-
-	v = document.createElement('div')
-	v.id = 'vis'
-	loader = document.createElement('div')
-	loader.classList.add('l')
-	v.appendChild(loader)
-	r.appendChild(v)
-
-	show_visualization()
-
-}
-load_data()
 async function show_visualization() {
 	r = document.getElementById('results')
 	r.querySelectorAll(':not(.l)').forEach(e => {
@@ -177,7 +147,37 @@ async function show_visualization() {
 	}
 	r.appendChild(catresults)	
 }
-document.getElementById('selector').onchange = function(){show_visualization()}
+
+async function load_data() {
+	r = document.getElementById('results')
+
+	response = await fetch('data/index');
+	files = await response.text()
+	console.log(files)
+
+	selector = document.createElement('select')
+	selector.id = 'selector'
+	for (const f in files.split(/\r?\n/)) {
+		o = document.createElement('option')
+		o.value = files[f]
+		o.innerHTML = files[f].split('_')[0]
+		selector.appendChild(o);
+	}
+	//create a list of all the data available
+	r.appendChild(selector)
+
+	v = document.createElement('div')
+	v.id = 'vis'
+	loader = document.createElement('div')
+	loader.classList.add('l')
+	v.appendChild(loader)
+	r.appendChild(v)
+
+	show_visualization()
+
+	document.getElementById('selector').onchange = function(){show_visualization()}
+}
+load_data()
 //the findings section should have a [dynamically generated] dropdown that allows you to cycle between the visuals for each of the scrapes
 //backend pipe ls data to text file for frontend to read, and name all visuals with corresponding timestamp prefix in their respective folder
 </script>
