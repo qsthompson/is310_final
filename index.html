@@ -126,9 +126,9 @@ async function show_visualization() {
 		card.appendChild('title')
 		list = document.createElement('ol')
 		list.classList.add('topten')
-		for (const i in list) {
+		for (const i of list) {
 			li = document.createElement('li')
-			li.innerHTML = list[i]
+			li.innerHTML = i
 			list.appendChild(li)
 		}
 		return card
@@ -157,10 +157,10 @@ async function load_data() {
 
 	selector = document.createElement('select')
 	selector.id = 'selector'
-	for (const f in files.split(/\r?\n/)) {
+	for (const f of files.split(/\r?\n/)) {
 		o = document.createElement('option')
-		o.value = files[f]
-		o.innerHTML = files[f].split('_')[0]
+		o.value = f
+		o.innerHTML = f.split('_')[0]
 		selector.appendChild(o);
 	}
 	//create a list of all the data available
