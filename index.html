@@ -55,6 +55,8 @@
 		overflow-y: scroll;
 		border: .1em solid black;
 		max-height: 16em;
+		padding: .5em;
+		margin: .5em;
 	}
 	.card {
 		padding: 1em 2em;
@@ -106,13 +108,9 @@
 	</div>
 	<div class='p'>
 	I also had a lot of trouble with TF-IDF, which has been true in the past as well. I think if i put in a lot of time taking it apart and understanding how it works internally, I would understand it a lot better. While doing this project, I just tried my best to trust it. Even once I had it working somewhat properly, I found that I was still having trouble with it, because the top terms were ones which were by themselves in the product titles. With my limited understanding of how TF-IDF worked, I thought that the max-df being .7 would fiulter these out, but I guess it didn't work on single word strings. I am sure that these could have been filtered out in a single line using a dataframe instruction, but I didn't know how to do it. I do not enjoy pandas' documentation, and what I usually do when something's documentation isn't cutting it is to check forum answers, but people's uses of pandas always seem to be way too specific or complex to help me. After thinking about this for a little while, I instead decided to filter out titles with fewer than four words before the TF-IDF process, which was much easier for me.
-	<div class='p'>
 	This felt very arbitrary, and it was, as the next time I ran the code, the word "prey" was the top result with a score of 0.88, having ocurred 2 times in 2 different 7 word titles. If I raised the minimum length more, this would be fixed, but the real problem was that the book, song and movie titles did not follow the same "extremely long and descriptive" title convention that all of the other categories did. If I filtered them out, this would likely solve the problem entirely, but my data cleaning was getting more and more subjective by the second. So, I went ahead and added a section to the code which would not add certain categories to the overall title list, then ran the code repeatedly, adding categories that broke convention, until I was happy with how the result looked. The skipped categories would still have their common phrases indexed amongst their own titles, just not overall. After this, "crochet" was still the winning term because one product featured a title where they said crochet 8 times and I was starting to accept that TF-IDF was an imperfect text analysis system, especially in situations where the documents used are so short (product titles).
-	</div>
-	</div>
-	</div>
-	<div class="p">
 	After all of this data cleaning and confusion, I was almost ready to write my own text analysis method, but then I had the idea to instead combine all of the titles for each category into a single string so that they would be categorized more fairly, and this worked beautifully. The top term was "refurbished" which I think makes a lot of sense. The second term was "coin," likely because the collectible coin section was still too heavily weighted somehow, but it didn't matter too much. Most of the results seemed reasonable, and that's surely what's most important in data visualization. 
+	</div>
 	</div>
 </body>
 <script>
