@@ -109,6 +109,45 @@ document.querySelectorAll('.v').forEach(e => {
 	}
 })
 
+async function show_visualization() {
+	r = document.getElementById('vis')
+	r.querySelectorAll(':not(.l)').forEach(e => {
+		e.remove()
+		//clear previous items
+	})
+	response = await fetch('data/' + document.getElementById('selector').value)
+	data = JSON.parse(await response.json())
+
+	function fillcard(title, list) {
+		card = document.createElement('div')
+		card.classList.add('card')
+		title = document.createElement('h3')
+		title.innerHTML = title
+		card.appendChild('title')
+		list = document.createElement('ol')
+		list.classList.add('topten')
+		for (const i in list) {
+			li = document.createElement('li')
+			li.innerHTML = list[i]
+			list.appendChild(li)
+		}
+		return card
+	}
+
+	overallresults = fillcard("Overall Results", data['overall_terms'])
+	overallresults.classList.add('topresults')
+	r.appendChild(overallresults)
+	
+	catresults = document.createElement('div')
+	catresults.classList.add('cats')
+	for (const [key, value] of Object.entries(data)) {
+		if (key != 'overall_terms') {
+			catresults.appendChild(fillcard(key, value))
+		}
+	}
+	r.appendChild(catresults)	
+}
+
 async function load_data() {
 	r = document.getElementById('results')
 
@@ -133,47 +172,11 @@ async function load_data() {
 	loader.classList.add('l')
 	v.appendChild(loader)
 	r.appendChild(v)
-	async function show_visualization() {
-		r = document.getElementById('results')
-		r.querySelectorAll(':not(.l)').forEach(e => {
-			e.remove()
-			//clear previous items
-		})
-		response = await fetch('data/' + document.getElementById('selector').value)
-		data = JSON.parse(await response.json())
 
-		function fillcard(title, list) {
-			card = document.createElement('div')
-			card.classList.add('card')
-			title = document.createElement('h3')
-			title.innerHTML = title
-			card.appendChild('title')
-			list = document.createElement('ol')
-			list.classList.add('topten')
-			for (const i in list) {
-				li = document.createElement('li')
-				li.innerHTML = list[i]
-				list.appendChild(li)
-			}
-			return card
-		}
-
-		overallresults = fillcard("Overall Results", data['overall_terms'])
-		overallresults.classList.add('topresults')
-		r.appendChild(overallresults)
-		
-		catresults = document.createElement('div')
-		catresults.classList.add('cats')
-		for (const [key, value] of Object.entries(data)) {
-			if (key != 'overall_terms') {
-				catresults.appendChild(fillcard(key, value))
-			}
-		}
-		r.appendChild(catresults)	
-	}
 	show_visualization()
-}
 
+	document.getElementById('selector').onchange = function(){show_visualization()}
+}
 load_data()
 //the findings section should have a [dynamically generated] dropdown that allows you to cycle between the visuals for each of the scrapes
 //backend pipe ls data to text file for frontend to read, and name all visuals with corresponding timestamp prefix in their respective folder
