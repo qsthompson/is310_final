@@ -115,7 +115,8 @@ async function show_visualization() {
 		e.remove()
 		//clear previous items
 	})
-	response = await fetch('data/' + document.getElementById('selector').value)
+	url = 'data/' + document.getElementById('selector').value
+	response = await fetch(url)
 	data = JSON.parse(await response.json())
 
 	function fillcard(title, list) {
