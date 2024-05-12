@@ -124,13 +124,14 @@ async function show_visualization() {
 		title = document.createElement('h3')
 		title.innerHTML = title
 		card.appendChild(title)
-		list = document.createElement('ol')
-		list.classList.add('topten')
+		l = document.createElement('ol')
+		l.classList.add('topten')
 		for (const i of list) {
 			li = document.createElement('li')
 			li.innerHTML = i
-			list.appendChild(li)
+			l.appendChild(li)
 		}
+		card.appendChild(l)
 		return card
 	}
 
